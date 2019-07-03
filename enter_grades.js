@@ -17,7 +17,7 @@ function createDialog() {
     textarea.rows = 20;
     textarea.cols = 80;
 
-	  var dialog = document.createElement("div");
+    var dialog = document.createElement("div");
     dialog.id = "dialog";
     dialog.append(textarea);
   
@@ -50,8 +50,38 @@ function loadCss(url) {
     $("head").append(css);    
 }
 
+function parseGrades(text) {
+    try {
+        return text.trim().split("\n").map(
+            line => {
+                
+                var data = line.split("\t");
+                return {
+                    "fn"    : data[0],
+                    "grade" : data[1].replace( /\D/g, '')
+                }; });
+    } catch(err) {
+        console.log("Parse error: " + err);
+        return [];
+    }
+}
+
 function fillGrades() {
-    console.log($("#grades")[0].value);
+    var grades = parseGrades($("#grades")[0].value);
+    $("#ProtocolDataEdit1_pnlStudents table tr")
+        .has("input[type='text']")
+        .each(function() {
+            [fn, grade, note ] = $(this).find("td").slice(2);
+            fn = fn.innerText;
+            var record = grades.find(row => row.fn == fn);
+            if (record != null) {
+                if (record.grade != "") {
+                    $(grade).find("input")[0].value = record.grade;
+                } else {
+                    $(note).find("input")[0].value = "не се явил";
+                }
+            }
+        });
 }
 
 loadCss("https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css");
