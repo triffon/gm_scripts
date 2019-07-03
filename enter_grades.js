@@ -53,8 +53,7 @@ function loadCss(url) {
 function parseGrades(text) {
     try {
         return text.trim().split("\n").map(
-            line => {
-                
+            line => {                
                 var data = line.split("\t");
                 return {
                     "fn"    : data[0],
@@ -66,22 +65,40 @@ function parseGrades(text) {
     }
 }
 
+function printArray(arr) {
+    var str = arr.length;
+    if (arr.length > 0) {
+        str += " -> " + arr.toString();
+    }
+    return str;
+}
+
 function fillGrades() {
     var grades = parseGrades($("#grades")[0].value);
+    var not_filled = [];
     $("#ProtocolDataEdit1_pnlStudents table tr")
         .has("input[type='text']")
         .each(function() {
             [fn, grade, note ] = $(this).find("td").slice(2);
-            fn = fn.innerText;
+            fn = $(fn).text();
             var record = grades.find(row => row.fn == fn);
             if (record != null) {
+                record.filled = true;
                 if (record.grade != "") {
                     $(grade).find("input")[0].value = record.grade;
                 } else {
                     $(note).find("input")[0].value = "не се явил";
                 }
+            } else {
+                not_filled.push(fn);
             }
         });
+    console.log("Filled in protocol          : " +
+                printArray(grades.filter(row => row.filled).map(row => row.fn)));
+    console.log("In protocol, but not in data: " +
+                printArray(not_filled));
+    console.log("In data, but not in protocol: " +
+                printArray(grades.filter(row => !row.filled).map(row => row.fn)));
 }
 
 loadCss("https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css");
