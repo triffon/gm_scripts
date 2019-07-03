@@ -29,8 +29,8 @@ function createDialog() {
         height : "auto",
         width : 600,
         buttons : {
-            "Запиши" : function() { fillGrades(); $(this).dialog("close"); },
-            "Откажи" : function() { $(this).dialog("close"); }
+            "Запиши" : () => { fillGrades(); $(this).dialog("close"); },
+            "Откажи" : () => { $(this).dialog("close"); }
         },
         title : "Въведете оценки"});
 }
