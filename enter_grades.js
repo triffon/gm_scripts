@@ -5,7 +5,7 @@
 // @require  https://code.jquery.com/ui/1.12.1/jquery-ui.min.js
 // @include  https://susi4.uni-sofia.bg/ISSU/forms/teachers/ProtocolDataEdit.aspx
 // ==/UserScript==
-// 
+//
 function showDialog() {
   $("#dialog").dialog("open");
 }
@@ -20,17 +20,17 @@ function createDialog() {
     var dialog = document.createElement("div");
     dialog.id = "dialog";
     dialog.append(textarea);
-  
+
     $("body").append(dialog);
-    $("#dialog").dialog({
+    $(dialog).dialog({
         autoOpen : false,
         resizable : true,
         modal : true,
         height : "auto",
         width : 600,
         buttons : {
-            "Запиши" : () => { fillGrades(); $(this).dialog("close"); },
-            "Откажи" : () => { $(this).dialog("close"); }
+            "Запиши" : () => { fillGrades(); $(dialog).dialog("close"); },
+            "Откажи" : () => { $(dialog).dialog("close"); }
         },
         title : "Въведете оценки"});
 }
@@ -47,13 +47,13 @@ function loadCss(url) {
     var css = document.createElement("link");
     css.rel = "stylesheet";
     css.href = url;
-    $("head").append(css);    
+    $("head").append(css);
 }
 
 function parseGrades(text) {
     try {
         return text.trim().split("\n").map(
-            line => {                
+            line => {
                 var data = line.split("\t");
                 return {
                     "fn"    : data[0],
