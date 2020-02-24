@@ -57,7 +57,7 @@ function parseGrades(text) {
                 var data = line.split("\t");
                 return {
                     "fn"    : data[0],
-                    "grade" : data[1].replace( /\D/g, '')
+                    "grade" : data[1] ? data[1].replace( /\D/g, "") : ""
                 }; });
     } catch(err) {
         console.log("Parse error: " + err);
